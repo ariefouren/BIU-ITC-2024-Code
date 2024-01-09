@@ -5,7 +5,7 @@ int main()
 {
     // variables declarations
     double width, height, perimeter, area;
-
+        
     // user's input
     cout << "Enter the rectangle width  : ";
     cin >> width;
