@@ -2,7 +2,7 @@
 using namespace std;
 
 int main()
-{
+{   
     // variables declarations
     double width, height, perimeter, area;
         
