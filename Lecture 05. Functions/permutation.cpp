@@ -3,7 +3,7 @@
 #include <stdlib.h>     // for srand(), rand()
 #include <time.h>       // for time()
 
-#define ARR_LENGTH 26
+#define ARR_LENGTH 5
 #define WIDTH 5
 using namespace std; 
 
@@ -35,9 +35,9 @@ void randomPermutation(int arr[], int n)
 
     // generate random permutation
     for(int nextPos = n-1; 1 <= nextPos; nextPos--)
-    {   // choose random index from 0 ... nextPos-1
+    {   // choose random index from 0 ... nextPos
         // rand() returns a random number between 0 and RAND_MAX
-        // rand() % nextPos returns a random number between 0 and nextPos-1
+        // rand() % (nextPos+1) returns a random number between 0 and nextPos
         int randPos = rand() % nextPos; 
         swap(arr[randPos], arr[nextPos]); 
     }
