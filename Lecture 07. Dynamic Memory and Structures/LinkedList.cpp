@@ -1,10 +1,8 @@
+// File: LinkedList.cpp
+// C++ program to find all occurrences of a subsequence 
+// in a DNA sequence using a linked list
+
 #include <iostream>
-#include <iomanip>      // for setw(), setpricision()
-#include <stdlib.h>     // for srand(), rand(), RAND_MAX
-#include <time.h>       // for time()
-
-
-#define WIDTH 10
 using namespace std; 
 
 // define a node of the list
@@ -86,11 +84,16 @@ char removeFromHead(LinkedList* list)
     }
     else    // the list is not empty
     {
-        Node* removedNode = list->head;
-        char removedValue = removedNode->value;
+        Node* nodeToRemove = list->head;
+        char value = nodeToRemove->value;
         list->head = list->head->next;
-        delete removedNode;
-        return removedValue;
+        if(list->head == NULL)   // the list became empty
+        {
+            list->tail = NULL;  // update the tail of the list
+        }
+
+        delete nodeToRemove;
+        return value;
     }
 }
 
@@ -124,29 +127,35 @@ void getDNAsequence(LinkedList* DNAsequence)
     }while(isCorrectNucleotide(ch)); // get the DNA sequence
 }
 
+// returns true if the subsequence is a prefix of the DNA sequence
+// starting from the given position
+bool isPrefix(Node* DNAsequenceNode, Node* subsequenceNode)
+{
+    while(subsequenceNode != NULL && 
+        DNAsequenceNode != NULL &&
+        subsequenceNode->value == DNAsequenceNode->value)
+    {
+        subsequenceNode = subsequenceNode->next;
+        DNAsequenceNode = DNAsequenceNode->next;
+    }
+    // if we get to the end of the subsequence, it is a prefix
+    return subsequenceNode == NULL;
+}
+
 // find and print all occurrences of the subsequence in the DNA sequence
 void findSubsequence(LinkedList* DNAsequence, LinkedList* subsequence)
 {
     int occurrenceCount = 0;
     int currDNAposition = 0;
-    Node* currentDNA = DNAsequence->head;
-    while(currentDNA != NULL)
+    Node* currentDNAnode = DNAsequence->head;
+    while(currentDNAnode != NULL)
     {
-        Node* currentSub = subsequence->head;
-        Node* currentDNA2 = currentDNA;
-        while(currentSub != NULL && 
-            currentDNA2 != NULL && 
-            currentSub->value == currentDNA2->value)
-        {
-            currentSub = currentSub->next;
-            currentDNA2 = currentDNA2->next;
-        }
-        if(currentSub == NULL) // subsequence found
+        if(isPrefix(currentDNAnode, subsequence->head))
         {
             occurrenceCount++;
-            cout << "Subsequence found at position " << currDNAposition << endl;
+            cout << "Occurrence at position " << currDNAposition << endl;
         }
-        currentDNA = currentDNA->next;
+        currentDNAnode = currentDNAnode->next;
         currDNAposition++;
     }
     cout << "Total occurrences: " << occurrenceCount << endl;
